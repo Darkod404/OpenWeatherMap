@@ -1,5 +1,6 @@
 package com.proyecto.proyecto.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,13 @@ public class ConsultaService {
     @Autowired
     private ConsultaRepository consultaRepository;
 
-    public Consulta guardarConsulta(Consulta consulta) {
+    public Consulta guardarConsulta(String cityName, String peticion, String respuesta) {
+
+        Consulta consulta = new Consulta();
+        consulta.setFechaCreacion(new Date());
+        consulta.setCiudad(cityName);
+        consulta.setPeticion(peticion);
+        consulta.setRespuesta(respuesta);
         return consultaRepository.save(consulta);
     }
 
