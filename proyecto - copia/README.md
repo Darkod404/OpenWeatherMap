@@ -36,18 +36,19 @@ A continuación se detallan las dependencias principales utilizadas en este proy
 
 - Spring Boot Starter Data JPA: Proporciona soporte para la integración de Spring Data JPA en aplicaciones Spring Boot.
 - Spring Boot Starter Security: Ofrece herramientas para la configuración de seguridad en aplicaciones Spring Boot. Version 3.2.2
-- Spring Security Crypto: Biblioteca para operaciones criptográficas utilizadas en Spring Security.
+- Spring Security Crypto: Libreria para operaciones criptográficas utilizadas en Spring Security.
 - Spring Boot Starter Web: Incluye herramientas para el desarrollo de aplicaciones web utilizando Spring Boot.
 - Spring Boot DevTools: Herramientas de desarrollo para aumentar la productividad del desarrollador en el ciclo de desarrollo.
 - MySQL Connector/J: Conector JDBC para MySQL, necesario para la integración con bases de datos MySQL. Version 8.0.33
 - Spring Boot Starter Validation: Proporciona soporte para la validación de datos en aplicaciones Spring Boot.
-- Lombok: Biblioteca que agiliza el desarrollo eliminando la necesidad de escribir código repetitivo.
+- Lombok: Libreria que agiliza el desarrollo eliminando la necesidad de escribir código repetitivo.
 - JUnit y Spring Test: Utilizados para escribir y ejecutar pruebas unitarias y de integración en la aplicación.
-- Caffeine: Biblioteca para la gestión de caché en memoria. Version 3.1.4
+- Caffeine: Libreria para la gestión de caché en memoria. Version 3.1.4
 - JJWT: Librería para la creación y validación de tokens JWT (JSON Web Tokens). Version 0.11.2
 - Log4j2: Implementación de logging utilizada en la aplicación.
 - Commons Lang: Proporciona clases de utilidad para la manipulación de cadenas, arrays, números, etc. Version 3.9
-- Nimbus JOSE JWT: Biblioteca para la manipulación de tokens JWT según la especificación JOSE (JSON Object Signing and Encryption). Version 9.0.1
+- Nimbus JOSE JWT: Libreria para la manipulación de tokens JWT según la especificación JOSE (JSON Object Signing and Encryption). Version 9.0.1
+- Mockito: Libreria de Java que proporciona clases y métodos para facilitar la creación y manipulación de objetos simulados (mocks) en pruebas unitarias. Version 2.0.2-beta
 
 Además de estas dependencias, se utiliza Swagger para documentar la API del proyecto. Para más detalles sobre la configuración específica de cada dependencia, consulta el archivo pom.xml.
 
