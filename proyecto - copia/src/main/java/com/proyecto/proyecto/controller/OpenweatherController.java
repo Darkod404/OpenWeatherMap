@@ -13,18 +13,17 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 import com.nimbusds.jose.shaded.json.parser.ParseException;
 import com.proyecto.proyecto.dto.Mensaje;
 import com.proyecto.proyecto.entity.Consulta;
-import com.proyecto.proyecto.entity.Geocoding;
 import com.proyecto.proyecto.security.dto.*;
 import com.proyecto.proyecto.security.entity.*;
 import com.proyecto.proyecto.security.enums.RolNombre;
 import com.proyecto.proyecto.security.jwt.JwtProvider;
 import com.proyecto.proyecto.security.service.*;
 import com.proyecto.proyecto.service.ConsultaService;
+import com.proyecto.proyecto.service.OpenweatherService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -36,13 +35,6 @@ import io.swagger.annotations.ApiParam;
 @Api(tags = "OpenWeather", description = "Endpoints para obtener información meteorológica")
 public class OpenweatherController {
     
-    private final String apiKey = "1dc3929bb99168e29431b2ba08de4fb6";
-
-    RestTemplate restTemplate = new RestTemplate();
-
-    @Autowired
-    ConsultaService consultaService;
-
     @Autowired
     PasswordEncoder passwordEncoder;
 
@@ -57,6 +49,12 @@ public class OpenweatherController {
 
     @Autowired
     JwtProvider jwtProvider;
+
+    @Autowired
+    ConsultaService consultaService;
+
+    @Autowired
+    OpenweatherService openweatherService;
 
 
     //Inicio EndPoint para registrar los usuarios
@@ -117,14 +115,9 @@ public class OpenweatherController {
     @Cacheable(value = "weatherCache", key = "#cityName")
     @ApiOperation(value = "Obtener clima actual por ciudad", notes = "Obtiene el clima actual por ciudad utilizando la API de OpenWeatherMap")
     public String getWeather(@ApiParam(value = "Nombre de la ciudad", required = true) @RequestParam String cityName) {
-
-        String apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + apiKey;
-
-        RestTemplate restTemplate = new RestTemplate();
-        String response = restTemplate.getForObject(apiUrl, String.class);
-
+    
+        String response = openweatherService.getCurrentWeather(cityName);
         consultaService.guardarConsulta(cityName,"Weather",response);
-
         return response;
     }//Fin EndPoint para obtener clima actual de una ciudad
 
@@ -135,13 +128,9 @@ public class OpenweatherController {
     @Cacheable(value = "forecastCache", key = "#cityName")
     @ApiOperation(value = "Obtener pronóstico del tiempo", notes = "Obtiene el pronóstico del tiempo para los próximos días utilizando la API de OpenWeatherMap")
     public String getForecast(@ApiParam(value = "Nombre de la ciudad", required = true) @RequestParam String cityName) {
-        // No hay verificación de autenticación aquí
-
-        String apiUrl = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&appid=" + apiKey;
-        String response = restTemplate.getForObject(apiUrl, String.class);
-
+        
+        String response = openweatherService.getWeatherForecast(cityName);
         consultaService.guardarConsulta(cityName,"Forecast",response);
-
         return response;
     }//Fin EndPoint para obtener el pronostico del tiempo para 5 dias con datos cada 3 horas
 
@@ -152,28 +141,17 @@ public class OpenweatherController {
     @Cacheable(value = "airPollutionCache", key = "#cityName")
     @ApiOperation(value = "Obtener contaminación del aire", notes = "Obtiene la información sobre la contaminación del aire utilizando la API de OpenWeatherMap")
     public String getAirPollutionForecast(@ApiParam(value = "Nombre de la ciudad", required = true) @RequestParam String cityName) {
-        // No hay verificación de autenticación aquí
 
-        String geoApiUrl = "http://api.openweathermap.org/geo/1.0/direct?q=" + cityName + "&appid=" + apiKey;
-        Geocoding[] geocodings = restTemplate.getForObject(geoApiUrl, Geocoding[].class);
-
-        if (geocodings != null && geocodings.length > 0) {
-
-            Geocoding geocoding = geocodings[0];
-            double lat = geocoding.getLat();
-            double lon = geocoding.getLon();
-
-            String airPollutionApiUrl = "http://api.openweathermap.org/data/2.5/air_pollution/forecast?lat=" + lat + "&lon=" + lon + "&appid=" + apiKey;
-            String response = restTemplate.getForObject(airPollutionApiUrl, String.class);
-
-            consultaService.guardarConsulta(cityName,"AirPolution",response);
-
-
-            return response;
-        } else {
-            return "No se encontraron coordenadas para la ciudad: " + cityName;
-        }
+        String response = openweatherService.getAirPollutionForecast(cityName);
+        consultaService.guardarConsulta(cityName,"AirPolution",response);
+        return response;
     }//Fin EndPoint para obtener la contaminacion del aire
+
+
+    @GetMapping("/consultas")
+    public List<Consulta> getConsultas(){
+        return consultaService.obtenerTodasLasConsultas();
+    }
 
 
 }
