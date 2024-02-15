@@ -1,11 +1,7 @@
 package com.proyecto.proyecto.controller;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-
+import java.util.*;
 import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
@@ -62,6 +58,8 @@ public class OpenweatherController {
     @Autowired
     JwtProvider jwtProvider;
 
+
+    //Inicio EndPoint para registrar los usuarios
     @PostMapping("/register")
     @ApiOperation(value = "Registrar un usuario", notes = "Registra un usuario en la base de datos")
     public ResponseEntity<Mensaje> nuevo(@Valid @RequestBody NuevoUsuario nuevoUsuario, BindingResult bindingResult) {
@@ -84,8 +82,11 @@ public class OpenweatherController {
         usuario.setRoles(roles);
         usuarioService.save(usuario);
         return new ResponseEntity<Mensaje>(new Mensaje("Usuario registrado con éxito"), HttpStatus.CREATED);
-    }
+    } //Fin EndPoint para registrar los usuarios
 
+
+
+    //Inicio EndPoint para autenticar usuarios
     @PostMapping("/login")
     @ApiOperation(value = "Autenticacion un usuario", notes = "valida la existencia de un usuario y devulve un token")
     public ResponseEntity<?> login(@Valid @RequestBody LoginUsuario loginUsuario, BindingResult bindingResult) {
@@ -97,17 +98,21 @@ public class OpenweatherController {
         String jwt = jwtProvider.generateToken(authentication);
         JwtDto jwtDto = new JwtDto(jwt);
         return new ResponseEntity<JwtDto>(jwtDto, HttpStatus.ACCEPTED);
-    }
-    
+    }//Fin EndPoint para autenticar usuarios
+
+
+
+    //Inicio EndPoint para actualizar token
     @PostMapping("/refresh")
     public ResponseEntity<JwtDto> refresh(@RequestBody JwtDto jwtDto) throws ParseException, java.text.ParseException {
         String token = jwtProvider.refreshToken(jwtDto);
         JwtDto jwt = new JwtDto(token);
         return new ResponseEntity<JwtDto>(jwt, HttpStatus.OK);
-    }
+    }//Fin EndPoint para refrescar token
 
 
-   // Obtener clima actual por ciudad
+
+    //Inicio EndPoint para obtener clima actual de una ciudad
     @GetMapping("/weather")
     @Cacheable(value = "weatherCache", key = "#cityName")
     @ApiOperation(value = "Obtener clima actual por ciudad", notes = "Obtiene el clima actual por ciudad utilizando la API de OpenWeatherMap")
@@ -121,9 +126,11 @@ public class OpenweatherController {
         saveConsulta(cityName, "Weather", response);
 
         return response;
-    }
+    }//Fin EndPoint para obtener clima actual de una ciudad
 
-    // Obtener el pronostico del tiempo para 5 dias con datos cada 3 horas
+
+
+    //Inicio EndPoint para obtener el pronostico del tiempo para 5 dias con datos cada 3 horas
     @GetMapping("/forecast")
     @Cacheable(value = "forecastCache", key = "#cityName")
     @ApiOperation(value = "Obtener pronóstico del tiempo", notes = "Obtiene el pronóstico del tiempo para los próximos días utilizando la API de OpenWeatherMap")
@@ -136,10 +143,11 @@ public class OpenweatherController {
         saveConsulta(cityName, "Forecast", response);
 
         return response;
+    }//Fin EndPoint para obtener el pronostico del tiempo para 5 dias con datos cada 3 horas
 
-    }
 
-    // Obtener la contaminacion del aire
+
+    //Inicio EndPoint para obtener la contaminacion del aire
     @GetMapping("/airpolution")
     @Cacheable(value = "airPollutionCache", key = "#cityName")
     @ApiOperation(value = "Obtener contaminación del aire", notes = "Obtiene la información sobre la contaminación del aire utilizando la API de OpenWeatherMap")
@@ -164,8 +172,10 @@ public class OpenweatherController {
         } else {
             return "No se encontraron coordenadas para la ciudad: " + cityName;
         }
-    }
+    }//Fin EndPoint para obtener la contaminacion del aire
 
+
+    //Metodo para crear y guardar la consulta
     private void saveConsulta(String cityName, String peticion, String respuesta) {
 
         Consulta consulta = new Consulta();
