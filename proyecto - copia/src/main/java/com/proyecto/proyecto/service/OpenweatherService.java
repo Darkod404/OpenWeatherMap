@@ -14,7 +14,7 @@ public class OpenweatherService implements ApiService{
 
 
     @Override
-    public String getCurrentWeather(String cityName) {
+    public String getWeather(String cityName) {
         String apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + apiKey;
         return restTemplate.getForObject(apiUrl,String.class);
     }
