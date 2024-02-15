@@ -116,7 +116,7 @@ public class OpenweatherController {
     @ApiOperation(value = "Obtener clima actual por ciudad", notes = "Obtiene el clima actual por ciudad utilizando la API de OpenWeatherMap")
     public String getWeather(@ApiParam(value = "Nombre de la ciudad", required = true) @RequestParam String cityName) {
     
-        String response = openweatherService.getCurrentWeather(cityName);
+        String response = openweatherService.getWeather(cityName);
         consultaService.guardarConsulta(cityName,"Weather",response);
         return response;
     }//Fin EndPoint para obtener clima actual de una ciudad
