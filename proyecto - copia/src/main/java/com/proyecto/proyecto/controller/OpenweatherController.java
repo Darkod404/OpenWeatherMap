@@ -129,7 +129,7 @@ public class OpenweatherController {
     @ApiOperation(value = "Obtener pronóstico del tiempo", notes = "Obtiene el pronóstico del tiempo para los próximos días utilizando la API de OpenWeatherMap")
     public String getForecast(@ApiParam(value = "Nombre de la ciudad", required = true) @RequestParam String cityName) {
         
-        String response = openweatherService.getWeatherForecast(cityName);
+        String response = openweatherService.getForecast(cityName);
         consultaService.guardarConsulta(cityName,"Forecast",response);
         return response;
     }//Fin EndPoint para obtener el pronostico del tiempo para 5 dias con datos cada 3 horas
@@ -142,7 +142,7 @@ public class OpenweatherController {
     @ApiOperation(value = "Obtener contaminación del aire", notes = "Obtiene la información sobre la contaminación del aire utilizando la API de OpenWeatherMap")
     public String getAirPollutionForecast(@ApiParam(value = "Nombre de la ciudad", required = true) @RequestParam String cityName) {
 
-        String response = openweatherService.getAirPollutionForecast(cityName);
+        String response = openweatherService.getAirPolution(cityName);
         consultaService.guardarConsulta(cityName,"AirPolution",response);
         return response;
     }//Fin EndPoint para obtener la contaminacion del aire
