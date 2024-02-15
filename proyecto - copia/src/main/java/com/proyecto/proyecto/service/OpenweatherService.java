@@ -19,12 +19,12 @@ public class OpenweatherService implements ApiService{
         return restTemplate.getForObject(apiUrl,String.class);
     }
     @Override
-    public String getWeatherForecast(String cityName) {
+    public String getForecast(String cityName) {
         String apiUrl = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&appid=" + apiKey;
         return restTemplate.getForObject(apiUrl, String.class);
     }
     @Override
-    public String getAirPollutionForecast(String cityName) {
+    public String getAirPolution(String cityName) {
         String geoApiUrl = "http://api.openweathermap.org/geo/1.0/direct?q=" + cityName + "&appid=" + apiKey;
         Geocoding[] geocodings = restTemplate.getForObject(geoApiUrl, Geocoding[].class);
 
