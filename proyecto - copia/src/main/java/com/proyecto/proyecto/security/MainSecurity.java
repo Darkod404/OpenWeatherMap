@@ -18,7 +18,7 @@ import com.proyecto.proyecto.security.jwt.JwtEntryPoint;
 import com.proyecto.proyecto.security.jwt.JwtTokenFilter;
 import com.proyecto.proyecto.security.service.UserDetailsServiceImpl;
 
-@SuppressWarnings("deprecation")
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -60,11 +60,12 @@ public class MainSecurity extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/**").permitAll()
-                .antMatchers("/api/weather").permitAll()
-                .antMatchers("/api/forecast").permitAll()
-                .antMatchers("/api/airpolution").permitAll()
-                
+                .antMatchers("/api/register").permitAll()
+                .antMatchers("/api/login").permitAll()
+                .antMatchers("/api/weather").authenticated()
+                .antMatchers("/api/forecast").authenticated()
+                .antMatchers("/api/airpolution").authenticated()
+                .antMatchers("/api/consultas").permitAll()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(jwtEntryPoint)
                 .and()
