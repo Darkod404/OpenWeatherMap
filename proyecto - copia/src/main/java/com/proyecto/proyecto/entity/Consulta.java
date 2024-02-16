@@ -5,8 +5,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+
 import org.springframework.format.annotation.DateTimeFormat;
+
+import com.proyecto.proyecto.security.entity.Usuario;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -38,5 +43,12 @@ public class Consulta {
     
     @Lob
     private String respuesta;
-        
+    
+    @ManyToOne
+    @JoinColumn(name = "usuarioId")
+    private Usuario usuario;
+
+    public void setUsuarioId(long id) {
+        this.id = id;
+    }
 }
