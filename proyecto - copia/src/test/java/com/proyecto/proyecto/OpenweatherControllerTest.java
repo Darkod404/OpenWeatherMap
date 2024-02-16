@@ -26,7 +26,7 @@ public class OpenweatherControllerTest {
 
     @Test
     public void testGetForecast() throws Exception {
-        String cityName = "Canada";
+        String cityName = "London";
         this.mockMvc.perform(MockMvcRequestBuilders.get("/api/forecast")
                 .param("cityName", cityName))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -35,10 +35,11 @@ public class OpenweatherControllerTest {
 
     @Test
     public void testGetAirPollution() throws Exception {
-        String cityName = "Portugal";
+        String cityName = "London";
         this.mockMvc.perform(MockMvcRequestBuilders.get("/api/airpolution")
                 .param("cityName", cityName))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType("text/plain;charset=UTF-8"));
     }
 }
+ 
