@@ -25,7 +25,7 @@ public class OpenweatherServiceTest {
 
     @Test
     void testGetWeather() {
-        String cityName = "New York";
+        String cityName = "Medellin";
         String respuestaWeather = openweatherService.getWeather(cityName);
         assertNotNull(respuestaWeather);
 
@@ -39,9 +39,9 @@ public class OpenweatherServiceTest {
 	}
 
 	@Test
-	void testGetAirPollution() {
+	void testGetAirPolution() {
 		String cityName = "Medellin";
-        String respuestaAirPolution = openweatherService.getAirPollution(cityName);
+        String respuestaAirPolution = openweatherService.getAirPolution(cityName);
         assertNotNull(respuestaAirPolution);
 	}
 }
