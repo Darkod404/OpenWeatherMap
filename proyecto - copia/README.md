@@ -48,7 +48,7 @@ A continuación se detallan las dependencias principales utilizadas en este proy
 - Log4j2: Implementación de logging utilizada en la aplicación.
 - Commons Lang: Proporciona clases de utilidad para la manipulación de cadenas, arrays, números, etc. Version 3.9
 - Nimbus JOSE JWT: Libreria para la manipulación de tokens JWT según la especificación JOSE (JSON Object Signing and Encryption). Version 9.0.1
-- Mockito: Libreria de Java que proporciona clases y métodos para facilitar la creación y manipulación de objetos simulados (mocks) en pruebas unitarias. Version 2.0.2-beta
+- Mockito: Libreria de Java que proporciona clases y métodos para facilitar la creación y manipulación de objetos simulados (mocks) en pruebas unitarias. Version 4.3.1
 
 Además de estas dependencias, se utiliza Swagger para documentar la API del proyecto. Para más detalles sobre la configuración específica de cada dependencia, consulta el archivo pom.xml.
 
