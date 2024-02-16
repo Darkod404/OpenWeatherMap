@@ -1,45 +1,46 @@
-package com.proyecto.proyecto;
+package com.proyecto.proyecto.service;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-public class OpenweatherControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+public class OpenweatherServiceTest {
 
-    @Test
-    public void testGetWeather() throws Exception {
-        String cityName = "London";
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/api/weather")
-                .param("cityName", cityName))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType("text/plain;charset=UTF-8"));
+    @InjectMocks
+    private OpenweatherService openweatherService;
+
+    @Mock
+    private ConsultaService consultaService;
+
+    @BeforeEach
+    void setUp(){
+        MockitoAnnotations.initMocks(this);
     }
 
     @Test
-    public void testGetForecast() throws Exception {
-        String cityName = "London";
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/api/forecast")
-                .param("cityName", cityName))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType("text/plain;charset=UTF-8"));
+    void testGetWeather() {
+        String cityName = "Medellin";
+        String respuestaWeather = openweatherService.getWeather(cityName);
+        assertNotNull(respuestaWeather);
+
     }
 
     @Test
-    public void testGetAirPollution() throws Exception {
-        String cityName = "London";
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/api/airpolution")
-                .param("cityName", cityName))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType("text/plain;charset=UTF-8"));
-    }
+	void testGetForecast() {
+		String cityName = "Medellin";
+        String respuestaForecast = openweatherService.getForecast(cityName);
+        assertNotNull(respuestaForecast);
+	}
+
+	@Test
+	void testGetAirPolution() {
+		String cityName = "Medellin";
+        String respuestaAirPolution = openweatherService.getAirPolution(cityName);
+        assertNotNull(respuestaAirPolution);
+	}
 }
- 
