@@ -114,8 +114,12 @@ public class OpenweatherController {
     @GetMapping("/weather")
     @Cacheable(value = "weatherCache", key = "#cityName")
     @ApiOperation(value = "Obtener clima actual por ciudad", notes = "Obtiene el clima actual por ciudad utilizando la API de OpenWeatherMap")
-    public String getWeather(@ApiParam(value = "Nombre de la ciudad", required = true) @RequestParam String cityName) {
-    
+    public String getWeather(@ApiParam(value = "Nombre de la ciudad", required = true) @RequestParam String cityName, @RequestHeader(name="token") String tokenAutorizacion) {
+
+        if (SecurityContextHolder.getContext().getAuthentication() == null || SecurityContextHolder.getContext().getAuthentication().getPrincipal() == null) {
+            throw new RuntimeException("Unauthenticated user");
+        }        
+
         String response = openweatherService.getWeather(cityName);
         consultaService.guardarConsulta(cityName,"Weather",response);
         return response;
@@ -127,8 +131,13 @@ public class OpenweatherController {
     @GetMapping("/forecast")
     @Cacheable(value = "forecastCache", key = "#cityName")
     @ApiOperation(value = "Obtener pronóstico del tiempo", notes = "Obtiene el pronóstico del tiempo para los próximos días utilizando la API de OpenWeatherMap")
-    public String getForecast(@ApiParam(value = "Nombre de la ciudad", required = true) @RequestParam String cityName) {
+    public String getForecast(@ApiParam(value = "Nombre de la ciudad", required = true) @RequestParam String cityName, @RequestHeader(name="token") String tokenAutorizacion) {
         
+        if (SecurityContextHolder.getContext().getAuthentication() == null || SecurityContextHolder.getContext().getAuthentication().getPrincipal() == null) {
+            throw new RuntimeException("Unauthenticated user");
+        }
+
+    
         String response = openweatherService.getForecast(cityName);
         consultaService.guardarConsulta(cityName,"Forecast",response);
         return response;
@@ -140,7 +149,11 @@ public class OpenweatherController {
     @GetMapping("/airpolution")
     @Cacheable(value = "airPollutionCache", key = "#cityName")
     @ApiOperation(value = "Obtener contaminación del aire", notes = "Obtiene la información sobre la contaminación del aire utilizando la API de OpenWeatherMap")
-    public String getAirPollutionForecast(@ApiParam(value = "Nombre de la ciudad", required = true) @RequestParam String cityName) {
+    public String getAirPollutionForecast(@ApiParam(value = "Nombre de la ciudad", required = true) @RequestParam String cityName, @RequestHeader(name="token") String tokenAutorizacion) {
+
+        if (SecurityContextHolder.getContext().getAuthentication() == null || SecurityContextHolder.getContext().getAuthentication().getPrincipal() == null) {
+            throw new RuntimeException("Unauthenticated user");
+        }
 
         String response = openweatherService.getAirPolution(cityName);
         consultaService.guardarConsulta(cityName,"AirPolution",response);
